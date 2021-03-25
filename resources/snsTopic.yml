@@ -1,0 +1,5 @@
+Resources:
+  TextractTopic:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: TextractTopic

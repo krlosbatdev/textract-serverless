@@ -1,0 +1,61 @@
+Resources:
+  S3Bucket:
+    DependsOn:
+      - TextractS3LambdaPermissionTexttract1S3
+      - ParseJsonS3LambdaPermissionTexttract1S3
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${self:custom.bucket}
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - '*'
+            AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+              - DELETE
+              - HEAD
+            MaxAge: 3000
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: 'suffix'
+                    Value: '.pdf'
+            Function:
+              'Fn::GetAtt': [TextractS3LambdaFunction, Arn]
+          - Event: 's3:ObjectCreated:*'
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: 'prefix'
+                    Value: 'json/'
+                  - Name: 'suffix'
+                    Value: '.json'
+            Function:
+              'Fn::GetAtt': [ParseJsonS3LambdaFunction, Arn]
+  ParseJsonS3LambdaPermissionTexttract1S3:
+    DependsOn:
+      - ParseJsonS3LambdaFunction
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        'Fn::GetAtt': [ParseJsonS3LambdaFunction, Arn]
+      Action: 'lambda:InvokeFunction'
+      Principal: 's3.amazonaws.com'
+      SourceArn: 'arn:aws:s3:::${self:custom.bucket}'
+  TextractS3LambdaPermissionTexttract1S3:
+    DependsOn:
+      - TextractS3LambdaFunction
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName:
+        'Fn::GetAtt': [TextractS3LambdaFunction, Arn]
+      Action: 'lambda:InvokeFunction'
+      Principal: 's3.amazonaws.com'
+      SourceArn: 'arn:aws:s3:::${self:custom.bucket}'

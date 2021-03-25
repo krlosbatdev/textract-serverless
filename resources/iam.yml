@@ -1,0 +1,27 @@
+Resources:
+  TextractServiceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /${self:custom.stage}-textract-poc/
+      RoleName: TextractServiceRole
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - textract.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: textract
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "s3:*"
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - "sns:*"
+                Resource: "*"

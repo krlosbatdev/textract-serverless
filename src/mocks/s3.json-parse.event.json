@@ -1,0 +1,24 @@
+{
+    "Records": [
+        {
+            "EventSource": "aws:sns",
+            "EventVersion": "1.0",
+            "EventSubscriptionArn": "arn:aws:sns:us-west-2:003389602039:TextractTopic:d6001f21-4ec1-4450-8952-c32f18478b73",
+            "Sns": {
+                "Type": "Notification",
+                "MessageId": "a11ae276-a27b-5563-9535-baa0e354b01e",
+                "TopicArn": "arn:aws:sns:us-west-2:003389602039:TextractTopic",
+                "Subject": null,
+                "Message": "{\"JobId\":\"a187cd7400b400df17a220831c32c86632e3edf8b1fa7719f58fcc60732181aa\",\"Status\":\"SUCCEEDED\",\"API\":\"StartDocumentAnalysis\",\"Timestamp\":1616658159490,\"DocumentLocation\":{\"S3ObjectName\":\"W-9.pdf\",\"S3Bucket\":\"dev-textract-poc\"}}",
+                "Timestamp": "2021-03-25T07:42:39.564Z",
+                "SignatureVersion": "1",
+                "Signature": "sWTWS9rtq6Q0Pzm41X2IznTDazObe/0mh8+l9cU7XYpCYv8HuDZ1OGra0LyQwLcpw6W52HQWi25xGXj5UVMmv3NSjf80VcVVJmiBgQic2ZiW7kIF4r7hPQU6SGYKyCfd3YEe1k5Fnm/8cxQa79CRz+pOsecpSrfLnFv753TluYSKYDB/MP1Ck4TfnUi95fvaBi5XJZUknCmhOlGPCEmfwzR7S4Fj2L4wDmJN3BUzCWgqJc5uouf6jQ5ei0eFlPYpm2VQjI1qCE1oJRlC2rG0VGzO87u82uDrekDcOotq8ota5X9bkKe1jJchblgILS3oiXUwRLFFsAiNRqlye4W26A==",
+                "SigningCertUrl": "https://sns.us-west-2.amazonaws.com/SimpleNotificationService-010a507c1833636cd94bdb98bd93083a.pem",
+                "UnsubscribeUrl": "https://sns.us-west-2.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-west-2:003389602039:TextractTopic:d6001f21-4ec1-4450-8952-c32f18478b73",
+                "MessageAttributes": {}
+            }
+        }
+    ]
+}
+
+

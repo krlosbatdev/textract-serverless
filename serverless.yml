@@ -1,0 +1,65 @@
+service: textract-poc
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-textract-poc
+  tag: "textract-poc"
+  bucket: ${self:custom.stage}-textract-poc
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: us-west-2
+  stage: dev
+  memorySize: 128
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - "s3:*"
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - "sns:*"
+        - "sqs:*"
+        - "textract:*"
+      Resource: "*"
+
+functions:
+  textractS3:
+    handler: src/s3-textract.main
+    tags:
+      App: ${self:custom.tag}
+    environment:
+      snsTopicArn: !Ref TextractTopic
+      textractRoleArn:
+        Fn::GetAtt:
+          - TextractServiceRole
+          - Arn
+
+  parseJsonS3:
+    handler: src/s3-jsonparse.main
+    events:
+      - sns:
+          arn: !Ref TextractTopic
+          topicName: MyCustomTopic
+    tags:
+      App: ${self:custom.tag}
+    environment:
+      tableName: ${self:custom.tableName}
+
+
+resources:
+  - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/iam.yml)}
+  - ${file(resources/snsTopic.yml)}
+
